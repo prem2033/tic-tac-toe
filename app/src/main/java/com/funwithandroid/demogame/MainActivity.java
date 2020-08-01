@@ -21,8 +21,8 @@ public class MainActivity extends AppCompatActivity {
     int[] touchstroe;
     int p1sign,p2sign;
     private  String p1name,p2name;
-    private TextView playerturn;
-    private  int count=0;
+    private TextView playerturn,player1Score,player2Score,leadingtext;
+    private  int count=0,player1win=0,player2win=0;
     boolean winflag=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +49,19 @@ public class MainActivity extends AppCompatActivity {
         imageView8=findViewById(R.id.imageView8);
         imageView9=findViewById(R.id.imageView9);
         playerturn=findViewById(R.id.playerturn);
+        player1Score=findViewById(R.id.player1Score);
+        player2Score=findViewById(R.id.player2Score);
+        leadingtext=findViewById(R.id.leadingtext);
         playerturn.setSelected(true);
+        player1Score.setSelected(true);
+        player2Score.setSelected(true);
+        leadingtext.setSelected(true);
         player1=true;
         getIntentValue();
         playerturn.setText(p1name+" Turn");
+        player1Score.setText(p1name+"=0");
+        player2Score.setText(p2name+"=0");
+        leadingtext.setText("yet to do...");
     }
     public  void showicon(View view){
         ImageView img = (ImageView) view;
@@ -102,6 +111,8 @@ public class MainActivity extends AppCompatActivity {
                 if(touchstroe[winposition[0]-1]==1 && touchstroe[winposition[1]-1]==1 && touchstroe[winposition[2]-1]==1){
                     winflag=true;
                     alterdialog(p1name);
+                    player1win++;
+                    player1Score.setText(p1name+"="+player1win);
                     player2=false;
                     player1=false;
                 }
@@ -111,6 +122,8 @@ public class MainActivity extends AppCompatActivity {
                 if(touchstroe[winposition[0]-1]==2 && touchstroe[winposition[1]-1]==2 && touchstroe[winposition[2]-1]==2){
                     winflag=true;
                     alterdialog(p2name);
+                    player2win++;
+                    player2Score.setText(p2name+"="+player2win);
                     player2=false;
                     player1=false;
                 }
@@ -180,14 +193,17 @@ public class MainActivity extends AppCompatActivity {
         });
         alertDialog.show();
     }
+    //getting player name form previous Intent
    public void  getIntentValue(){
        Intent intent=getIntent();
        p1name=intent.getStringExtra("PLAYER1_NAME");
        p2name=intent.getStringExtra("PLAYER2_NAME");
-       if(p1name.isEmpty())
-           p1name="Player1";
-       if(p2name.isEmpty())
-           p2name="Player2";
+       if(p1name.isEmpty()) {
+           p1name = "Player1";
+       }
+       if(p2name.isEmpty()) {
+           p2name = "Player2";
+       }
     }
     public  void alertForDraw(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
